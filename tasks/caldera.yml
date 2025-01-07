@@ -72,13 +72,12 @@
     - npm audit fix --force
     - npm run build
 
-#- name: Caldera - training plugins
-#  ansible.builtin.command:
-#    cmd: "{{ item }}" 
-#    chdir: /opt/caldera/plugins/training
-#  loop:
-#    - npm install
-#    - npm audit fix --force
-#    - npm run build
-
+- name: Pull docker images for builder plugins
+  community.docker.docker_image_pull:
+    name: "{{ item }}"
+  loop:
+    - 'mono:latest'
+    - 'dockcross/windows-static-x64:latest'
+    - 'dockcross/windows-static-x86:latest'
+    - 'golang:latest'
 
