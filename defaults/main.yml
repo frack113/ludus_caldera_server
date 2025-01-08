@@ -17,3 +17,9 @@ ludus_caldera_tcp: 7010
 ludus_caldera_udp: 7011
 ludus_caldera_websocket: 8888
 ludus_caldera_port: 8888
+
+# Plugins
+ludus_caldera_plugins:
+  - access
+  - atomic
+  - sandcat
