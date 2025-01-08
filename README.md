@@ -15,11 +15,25 @@ Available variables are listed below, along with default values (see `defaults/m
     # The go version to install for plugins
     ludus_caldera_go_version: '1.23.4'
 
-    # Password 
+    # User 
     ludus_caldera_admin_pwd: 'admin'
     ludus_caldera_red_pwd: 'red'
     ludus_caldera_blue_pwd: 'blue'
 
+    # Network Config
+    ludus_caldera_dns_socket: 8853
+    ludus_caldera_ftp_port: 2222
+    ludus_caldera_http: 8888
+    ludus_caldera_tcp: 7010
+    ludus_caldera_udp: 7011
+    ludus_caldera_websocket: 8888
+    ludus_caldera_port: 8888
+
+    # Plugins
+    ludus_caldera_plugins:
+      - access
+      - atomic
+      - sandcat
 
 ## Dependencies
 
@@ -27,13 +41,6 @@ None.
 
 ## Example Playbook
 
-```yaml
-- hosts: caldera-server
-  roles:
-    - frack113.ludus_caldera_server
-  vars:
-    ludus_aurora_dashboard: true
-```
 
 ## Example Ludus Range Config
 
@@ -49,6 +56,12 @@ ludus:
     linux: true
     roles:
       - frack113.ludus_caldera_server
+    role_vars:
+      ludus_caldera_plugins:
+        - access
+        - atomic
+        - human
+        - sandcat
 ```
 
 ## License
