@@ -13,14 +13,11 @@ galaxy_info:
     # This example includes a lot, see https://github.com/ansible/ansible-lint/blob/main/src/ansiblelint/schemas/meta.json for all possibilities
     - name: Debian
       versions:
-        - buster
-        - bullseye
         - bookworm
     - name: Ubuntu
       versions:
-        - bionic
         - focal
-        - jammy"
+        - jammy
   galaxy_tags:
     - purple
     - mitre

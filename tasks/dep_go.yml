@@ -36,6 +36,14 @@
     create: true
     state: present
 
+- name: Add go binary path to /home/debian/.bashrc
+  ansible.builtin.lineinfile:
+    path: /home/debian/.bashrc
+    line: 'PATH=$PATH:/usr/local/go/bin'
+    create: true
+    state: present
+  when: ansible_distribution == 'Debian'
+
 - name: Add go binary path to /etc/environment
   ansible.builtin.replace:
     path: /etc/environment
@@ -47,3 +55,14 @@
     path: /etc/sudoers
     regexp: '^Defaults(.+)secure_path=(.*)$'
     replace: '#Defaults\g<1>secure_path=\g<2>'
+
+- name: Break ssh env security :)
+  ansible.builtin.replace:
+    path: /etc/ssh/sshd_config
+    regexp: '^#PermitUserEnvironment no$'
+    replace: 'PermitUserEnvironment yes'
+  when: ansible_distribution == 'Debian'
+
+
+- name: Reset SSH Connection
+  ansible.builtin.meta: reset_connection
