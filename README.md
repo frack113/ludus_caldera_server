@@ -5,7 +5,9 @@ An Ansible Role that installs [Caldera Server](https://caldera.mitre.org/) main 
 
 ## Requirements
 
-- Ubuntu LTS server
+- Linux server
+  - Debian 12
+  - Ubuntu 24 LTS
 - Internet connection
 
 ## Role Variables

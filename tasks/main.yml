@@ -8,18 +8,13 @@
     path: /opt/caldera
   register: stat_result   
 
-- name: Install Caldera on Ubuntu 22.xx
+- name: Install Caldera on Ubuntu
   ansible.builtin.include_tasks:
-    file: install_ubuntu_2204.yml
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '22' and not stat_result.stat.exists
+    file: install_ubuntu.yml
+  when: ansible_distribution == 'Ubuntu' and not stat_result.stat.exists
 
-- name: Install Caldera on Ubuntu 24.xx
+- name: Install Caldera on Debian 
   ansible.builtin.include_tasks:
-    file: install_ubuntu_2404.yml
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '24' and not stat_result.stat.exists
-
-- name: Install Caldera on Alamalinux 9
-  ansible.builtin.include_tasks:
-    file: install_alamlinux_9.yml
-  when: ansible_distribution == 'AlmaLinux' and ansible_distribution_major_version == '9' and not stat_result.stat.exists
+    file: install_debian.yml
+  when: ansible_distribution == 'Debian' and not stat_result.stat.exists
 

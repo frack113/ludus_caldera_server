@@ -1,17 +1,27 @@
 ---
 
+- name: Install for ansible.builtin.apt_key
+  ansible.builtin.apt:
+    name: 
+      - gpg
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: yes
+    install_recommends: yes
+
 - name: set APT Key for Docker
   ansible.builtin.apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
+    url: https://download.docker.com/linux/debian/gpg
     keyring: /usr/share/keyrings/docker-archive-keyring.gpg
     state: present
 
-- name: Add Docker repository into sources list
+- name: Add Docker repository into sources list for debian 12
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu jammy stable"
+    repo: "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian bookworm stable"
     state: present
     update_cache: True
-
+  when: ansible_distribution_major_version == '12' 
 
 - name: Install requirements
   ansible.builtin.apt:
@@ -23,23 +33,14 @@
       - mingw-w64
       - zlib1g
       - unzip
-      - upx
+      - golang-go
+      - nodejs 
+      - npm
       - haproxy
       - docker-ce 
     state: present
     update_cache: yes
     install_recommends: yes
-
-- name: Install NodeJS
-  ansible.builtin.include_tasks:
-    file: dep_node.yml
-
-- name: Install Go-lang
-  ansible.builtin.include_tasks:
-    file: dep_go.yml
-
-- name: Reset SSH Connection
-  ansible.builtin.meta: reset_connection
 
 - name: Install Caldera
   ansible.builtin.include_tasks:
