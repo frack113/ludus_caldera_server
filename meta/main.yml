@@ -1,5 +1,6 @@
 ---
-dependencies: []
+dependencies:
+  - role: geerlingguy.docker
 
 galaxy_info:
   role_name: ludus_caldera_server
