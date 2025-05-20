@@ -6,6 +6,7 @@
     recursive: true
     track_submodules: true
     force: true
+    version: "{{ ludus_caldera_git }}"
 
 - name: Copy custom config
   ansible.builtin.template:
@@ -52,21 +53,6 @@
     name: asyncssh
     state: latest
     virtualenv: /opt/caldera/venv
-
-- name: Install sancat gocat plugins
-  ansible.builtin.shell:
-    cmd: "{{ item }}" 
-    chdir: /opt/caldera/plugins/sandcat/gocat
-  when: '"sandcat" in ludus_caldera_plugins'
-  loop:
-    - go mod tidy
-    - go mod download
-
-- name: Install sancat update agent
-  ansible.builtin.command:
-    cmd: ./update-agents.sh
-    chdir: /opt/caldera/plugins/sandcat
-  when: '"sandcat" in ludus_caldera_plugins'
 
 - name: Clone atomic read team plugins 
   ansible.builtin.git:
