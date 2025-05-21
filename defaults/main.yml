@@ -1,6 +1,10 @@
 ---
 # Role variables should all be prefaced with the name of the role to avoid
 # name conflicts with other roles
+
+# tag or SHA-1 hash
+ludus_caldera_git: b24f6e7a99cab19cbf417009bda9b9c6c81abc31
+
 # build
 ludus_caldera_go_version: '1.23.4'
 

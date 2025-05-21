@@ -6,6 +6,7 @@
     recursive: true
     track_submodules: true
     force: true
+    version: "{{ ludus_caldera_git }}"
 
 - name: Copy custom config
   ansible.builtin.template:
@@ -53,21 +54,6 @@
     state: latest
     virtualenv: /opt/caldera/venv
 
-- name: Install sancat gocat plugins
-  ansible.builtin.shell:
-    cmd: "{{ item }}" 
-    chdir: /opt/caldera/plugins/sandcat/gocat
-  when: '"sandcat" in ludus_caldera_plugins'
-  loop:
-    - go mod tidy
-    - go mod download
-
-- name: Install sancat update agent
-  ansible.builtin.command:
-    cmd: ./update-agents.sh
-    chdir: /opt/caldera/plugins/sandcat
-  when: '"sandcat" in ludus_caldera_plugins'
-
 - name: Clone atomic read team plugins 
   ansible.builtin.git:
     repo: 'https://github.com/redcanaryco/atomic-red-team.git'
@@ -90,11 +76,3 @@
   ansible.builtin.template:
     src: magma.env.j2
     dest: /opt/caldera/plugins/magma/.env
-
-- name: Caldera - Magma plugins
-  ansible.builtin.command:
-    cmd: "{{ item }}" 
-    chdir: /opt/caldera/plugins/magma
-  loop:
-    - npm install
-    - npm run build
