@@ -76,11 +76,3 @@
   ansible.builtin.template:
     src: magma.env.j2
     dest: /opt/caldera/plugins/magma/.env
-
-- name: Caldera - Magma plugins
-  ansible.builtin.command:
-    cmd: "{{ item }}" 
-    chdir: /opt/caldera/plugins/magma
-  loop:
-    - npm install
-    - npm run build
