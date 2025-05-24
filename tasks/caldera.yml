@@ -1,5 +1,13 @@
 ---
-- name: Clone caldera
+- name: Install git 
+  ansible.builtin.apt:
+    name:
+      - git
+    state: present
+    update_cache: yes
+    install_recommends: yes
+
+- name: Clone caldera git
   ansible.builtin.git:
     repo: 'https://github.com/mitre/caldera.git'
     dest: /opt/caldera
@@ -13,66 +21,31 @@
     src: local.yml.j2
     dest: /opt/caldera/conf/local.yml
 
-- name: Install caldera python requirements
-  ansible.builtin.pip:
-    requirements: "{{ item }}"
-    virtualenv: /opt/caldera/venv
-  loop:
-    - /opt/caldera/requirements.txt
-    - /opt/caldera/requirements-dev.txt
+- name: Build caldera image
+  community.docker.docker_image_build:
+    name: caldera:server
+    path: /opt/caldera
+    args: "WIN_BUILD=true"
 
-- name: Install emu python requirements
-  ansible.builtin.pip:
-    requirements: /opt/caldera/plugins/emu/requirements.txt
-    virtualenv: /opt/caldera/venv
-  when: '"emu" in ludus_caldera_plugins'
-
-- name: Install human python requirements
-  ansible.builtin.pip:
-    requirements: "{{ item }}"
-    virtualenv: /opt/caldera/venv
-  when: '"human" in ludus_caldera_plugins'
-  loop:
-    - /opt/caldera/plugins/human/pyhuman/requirements.txt
-    - /opt/caldera/plugins/human/requirements.txt
-
-- name: Install stockpile python requirements
-  ansible.builtin.pip:
-    requirements: /opt/caldera/plugins/stockpile/requirements.txt
-    virtualenv: /opt/caldera/venv
-  when: '"stockpile" in ludus_caldera_plugins'
-
-- name: Install builder python requirements
-  ansible.builtin.pip:
-    requirements: /opt/caldera/plugins/builder/requirements.txt
-    virtualenv: /opt/caldera/venv
-  when: '"builder" in ludus_caldera_plugins'
-
-- name: Install caldera python fix AsyncSSH error
-  ansible.builtin.pip:
-    name: asyncssh
-    state: latest
-    virtualenv: /opt/caldera/venv
-
-- name: Clone atomic read team plugins 
-  ansible.builtin.git:
-    repo: 'https://github.com/redcanaryco/atomic-red-team.git'
-    dest: /opt/caldera/plugins/atomic/data/atomic-red-team
-    depth: 1
-    force: true
-  when: '"atomic" in ludus_caldera_plugins'
-
-- name: Pull docker images for builder plugins
-  community.docker.docker_image_pull:
-    name: "{{ item }}"
-  when: '"builder" in ludus_caldera_plugins'
-  loop:
-    - 'mono:latest'
-    - 'dockcross/windows-static-x64:latest'
-    - 'dockcross/windows-static-x86:latest'
-    - 'golang:latest'
-
-- name: Copy custom magma .env
-  ansible.builtin.template:
-    src: magma.env.j2
-    dest: /opt/caldera/plugins/magma/.env
+- name: Start Caldera image
+  community.docker.docker_container:
+    name: caldera
+    image: caldera:server
+    detach: true
+    restart_policy: "unless-stopped"
+    ports:
+      - "8888:8888"
+      - "8443:8443"
+      - "7010:7010"
+      - "7011:7011/udp"
+      - "7012:7012"
+      - "8853:8853"
+      - "8022:8022"
+      - "2222:2222"
+    volumes:
+      - /opt/caldera/conf/local.yml:/usr/src/app/conf/local.yml
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8888/"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3

@@ -14,32 +14,23 @@ An Ansible Role that installs [Caldera Server](https://caldera.mitre.org/) main 
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-    # The go version to install for plugins
-    ludus_caldera_go_version: '1.23.4'
+```yaml
+# tag or SHA-1 hash
+ludus_caldera_git: b24f6e7a99cab19cbf417009bda9b9c6c81abc31
 
-    # User 
-    ludus_caldera_admin_pwd: 'admin'
-    ludus_caldera_red_pwd: 'red'
-    ludus_caldera_blue_pwd: 'blue'
-
-    # Network Config
-    ludus_caldera_dns_socket: 8853
-    ludus_caldera_ftp_port: 2222
-    ludus_caldera_http: 8888
-    ludus_caldera_tcp: 7010
-    ludus_caldera_udp: 7011
-    ludus_caldera_websocket: 8888
-    ludus_caldera_port: 8888
-
-    # Plugins
-    ludus_caldera_plugins:
-      - access
-      - atomic
-      - sandcat
+# User
+ludus_caldera_admin_pwd: 'admin'
+ludus_caldera_red_pwd: 'red'
+ludus_caldera_blue_pwd: 'blue'
+```
 
 ## Dependencies
 
-None.
+Ansible :
+
+- community.docker
+- geerlingguy.docker
+
 
 ## Example Playbook
 
@@ -59,11 +50,7 @@ ludus:
     roles:
       - frack113.ludus_caldera_server
     role_vars:
-      ludus_caldera_plugins:
-        - access
-        - atomic
-        - human
-        - sandcat
+      ludus_caldera_admin_pwd: 'SuperPassword'
 ```
 
 ## License
