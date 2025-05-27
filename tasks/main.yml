@@ -1,6 +1,11 @@
 ---
 # https://caldera.readthedocs.io/en/latest/Installing-Caldera.html
 
+- name: Remove /opt/caldera if it exists
+  ansible.builtin.file:
+    path: /opt/caldera
+    state: absent
+
 - name: Check that /opt/caldera exists
   stat:
     path: /opt/caldera
@@ -10,4 +15,3 @@
   ansible.builtin.include_tasks:
     file: caldera.yml
   when: not stat_result.stat.exists
-
