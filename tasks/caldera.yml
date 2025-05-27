@@ -1,4 +1,16 @@
 ---
+- name: Ensure python3-pip is installed
+  apt:
+    name: python3-pip
+    state: present
+  become: true
+
+- name: Ensure python3-requests is installed
+  apt:
+    name: python3-requests
+    state: present
+  become: true
+
 - name: Install git 
   ansible.builtin.apt:
     name:
