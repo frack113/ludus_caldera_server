@@ -1,9 +1,9 @@
 ---
 # https://caldera.readthedocs.io/en/latest/Installing-Caldera.html
 
-- name: Check that /opt/caldera exists
+- name: Check that finish file exists
   stat:
-    path: /opt/caldera
+    path: "/opt/caldera_{{ ludus_caldera_git }}.finish"
   register: stat_result   
 
 - name: Install Caldera

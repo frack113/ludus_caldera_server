@@ -1,8 +1,11 @@
 ---
-- name: Install git 
+- name: Install tools 
   ansible.builtin.apt:
     name:
       - git
+      - python3
+      - python3-pip
+      - python3-requests
     state: present
     update_cache: yes
     install_recommends: yes
@@ -49,3 +52,8 @@
       interval: 1m30s
       timeout: 10s
       retries: 3
+
+- name: Touch the .finish file
+  ansible.builtin.file:
+    path: "/opt/caldera_{{ ludus_caldera_git }}.finish"
+    state: touch

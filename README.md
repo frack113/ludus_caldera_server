@@ -2,7 +2,6 @@
 
 An Ansible Role that installs [Caldera Server](https://caldera.mitre.org/) main branch on linux .
 
-
 ## Requirements
 
 - Linux server
@@ -15,10 +14,10 @@ An Ansible Role that installs [Caldera Server](https://caldera.mitre.org/) main 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
 ```yaml
-# tag or SHA-1 hash
+# SHA-1 hash of the commit
 ludus_caldera_git: b24f6e7a99cab19cbf417009bda9b9c6c81abc31
 
-# User
+# User password
 ludus_caldera_admin_pwd: 'admin'
 ludus_caldera_red_pwd: 'red'
 ludus_caldera_blue_pwd: 'blue'
@@ -31,9 +30,7 @@ Ansible :
 - community.docker
 - geerlingguy.docker
 
-
 ## Example Playbook
-
 
 ## Example Ludus Range Config
 
@@ -41,8 +38,8 @@ Ansible :
 ludus:
   - vm_name: "{{ range_id }}-Caldera"
     hostname: "{{ range_id }}-Caldera"
-    template: ubuntu-24.04-x64-server-template
-    vlan: 99
+    template: debian-12-x64-server-template
+    vlan: 20
     ip_last_octet: 2
     ram_gb: 4
     cpus: 2
