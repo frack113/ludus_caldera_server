@@ -31,9 +31,7 @@ Ansible :
 - community.docker
 - geerlingguy.docker
 
-
 ## Example Playbook
-
 
 ## Example Ludus Range Config
 
@@ -41,8 +39,8 @@ Ansible :
 ludus:
   - vm_name: "{{ range_id }}-Caldera"
     hostname: "{{ range_id }}-Caldera"
-    template: ubuntu-24.04-x64-server-template
-    vlan: 99
+    template: debian-12-x64-server-template
+    vlan: 20
     ip_last_octet: 2
     ram_gb: 4
     cpus: 2
