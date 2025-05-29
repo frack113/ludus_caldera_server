@@ -52,3 +52,8 @@
       interval: 1m30s
       timeout: 10s
       retries: 3
+
+- name: Touch the .finish file
+  ansible.builtin.file:
+    path: "/opt/caldera_{{ ludus_caldera_git }}.finish"
+    state: touch
