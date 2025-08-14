@@ -15,7 +15,7 @@ Available variables are listed below, along with default values (see `defaults/m
 
 ```yaml
 # SHA-1 hash of the commit
-ludus_caldera_git: b24f6e7a99cab19cbf417009bda9b9c6c81abc31
+ludus_caldera_branch: '5.3.0'
 
 # User password
 ludus_caldera_admin_pwd: 'admin'
