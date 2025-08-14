@@ -12,23 +12,30 @@
 
 - name: Clone caldera git
   ansible.builtin.git:
-    repo: 'https://github.com/mitre/caldera.git'
+    repo: https://github.com/mitre/caldera.git
     dest: /opt/caldera
-    recursive: true
-    track_submodules: true
-    force: true
-    version: "{{ ludus_caldera_git }}"
+    version: "{{ ludus_caldera_branch }}"
+    recursive: yes
+  register: caldera_clone
+  changed_when: caldera_clone.changed
+
+- name: Debug clone result
+  ansible.builtin.debug:
+    msg: "Caldera repository cloned successfully: {{ caldera_clone.changed }}"
 
 - name: Copy custom config
   ansible.builtin.template:
     src: local.yml.j2
     dest: /opt/caldera/conf/local.yml
 
-- name: Build caldera image
-  community.docker.docker_image_build:
-    name: caldera:server
-    path: /opt/caldera
-    args: "WIN_BUILD=true"
+- name: Build caldera Docker image with Windows support
+  ansible.builtin.shell:
+    cmd: |
+      docker build --build-arg WIN_BUILD=true . -t caldera:server
+    chdir: /opt/caldera
+    creates: /opt/caldera/.docker-built
+  register: docker_build_result
+  changed_when: docker_build_result.changed
 
 - name: Start Caldera image
   community.docker.docker_container:
@@ -55,5 +62,5 @@
 
 - name: Touch the .finish file
   ansible.builtin.file:
-    path: "/opt/caldera_{{ ludus_caldera_git }}.finish"
+    path: "/opt/caldera_{{ ludus_caldera_branch }}.finish"
     state: touch

@@ -3,7 +3,7 @@
 
 - name: Check that finish file exists
   stat:
-    path: "/opt/caldera_{{ ludus_caldera_git }}.finish"
+    path: "/opt/caldera_{{ ludus_caldera_branch }}.finish"
   register: stat_result   
 
 - name: Install Caldera

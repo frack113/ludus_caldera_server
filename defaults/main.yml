@@ -3,7 +3,7 @@
 # name conflicts with other roles
 
 # tag or SHA-1 hash
-ludus_caldera_git: b24f6e7a99cab19cbf417009bda9b9c6c81abc31
+ludus_caldera_branch: '5.3.0'
 
 # User
 ludus_caldera_admin_pwd: 'admin'
